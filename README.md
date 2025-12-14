@@ -1,91 +1,60 @@
+
 # Employee Management System
 
-A clean, fast, and practical Employee Management System built to help teams manage people — not paperwork. Designed for HR teams, managers, and small-to-medium businesses that want a simple, reliable way to store employee records, manage departments and roles, and export actionable reports.
+A clean, practical C# application for managing employee records — built for teams who want a lightweight, local solution that uses XML files for storage. Focused on clarity, reliability, and easy extensibility.
 
-Why this project?
------------------
-- Save time: Replace scattered spreadsheets with a single source of truth.
-- Stay organized: Centralize employee data, roles, and department structure.
-- Actionable insights: Exportable reports make payroll, headcount, and audits easier.
-- Ready to integrate: Lightweight API-first design makes it easy to connect to existing tools.
+Highlights
+- Simple CRUD for employee profiles
+- Departments, roles and role-based access patterns (RBAC)
+- XML-based storage (no external DB required)
+- Export/import and report-ready data
+- Clear separation: Presentation (PL) / Business Logic (BL) / Data Access (DAL)
 
-Core features
--------------
-- Full CRUD for employees (profile, contact, employment details)
-- Department & role management
-- Search, filtering and pagination
-- CSV/Excel export for reports & payroll
-- Basic role-based access (Admin / HR / Employee)
-- Profile picture upload (optional)
-- Audit-ready: history-friendly structure for tracking changes
+Why use this project?
+- Minimal setup — runs with dotnet and stores data in plain XML files you can inspect and version.
+- Good for learning and small organizations that prefer file-based persistence.
+- Modular architecture makes adding new UI layers or swapping storage straightforward.
 
-Try it in 60 seconds
---------------------
-1. Clone the repo:
-```bash
-git clone https://github.com/chaya295/EmployeeManagementSystem.git
-cd EmployeeManagementSystem
-```
+What’s in this repo
+- dotNet5785_6550_4998.sln — Visual Studio / .NET solution file
+- PL/ — Presentation Layer (startup project; UI/console)
+- BL/ — Business Logic layer
+- DalList/ DalFacade/ DalXml/ — Data access implementations (XML-based)
+- xml/ — sample XML data files used by the app
+- BlTest/ DalTest/ — unit test projects
 
-2. Copy and configure environment:
-```bash
-cp .env.example .env
-# Edit .env: DB_* and JWT_SECRET at minimum
-```
+Quick start (build & run)
+1. Clone the repo
+   git clone https://github.com/chaya295/EmployeeManagementSystem.git
+   cd EmployeeManagementSystem
 
-3. Start the backend (example Node.js):
-```bash
-cd backend
-npm install
-npm run dev
-```
+2. Build the solution
+   dotnet build
 
-Or using Docker:
-```bash
-docker-compose up --build
-```
+3. Run the application (example — replace `<project-path>` with actual startup project if different)
+   dotnet run --project PL
 
-Minimal .env example
---------------------
-```env
-PORT=3000
-NODE_ENV=development
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASS=yourpassword
-DB_NAME=employee_db
-JWT_SECRET=replace_with_a_strong_secret
-```
+Notes:
+- If PL is a UI project that requires Visual Studio on Windows (WinForms/WPF), open the .sln in Visual Studio and run from there.
+- If PL is a console app, the dotnet run command above will start it from the CLI.
 
-API Highlights (examples)
--------------------------
-- POST /api/auth/login — Sign in and receive JWT
-- GET /api/employees — List employees (supports ?page=&limit=&search=)
-- POST /api/employees — Create employee
-- GET /api/employees/:id — Employee details
-- PUT /api/employees/:id — Update employee
-- DELETE /api/employees/:id — Remove employee
-- GET /api/reports/employees?format=csv — Export employees as CSV
+Running tests
+- Run all tests:
+  dotnet test
 
-Why teams love it
------------------
-- Lightweight: Minimal setup; useful from day one.
-- Extensible: Clear folder structure and API make adding features straightforward.
-- Practical: Focus on the everyday HR needs — search, edit, export.
-- Production-ready patterns: Environment-based config, recommended Docker setup, and CI-friendly workflows.
+XML storage & configuration
+- The project uses XML files for persistence (see the xml/ directory).
+- Look for a configuration value (e.g., in appsettings.json or a config class) that points to the XML file path. You can:
+  - Edit the path to a writable folder
+  - Inspect the XML files directly to verify stored data
+- Back up XML files before running migration/transform operations.
 
-Testing & Quality
------------------
-- Run the test suite:
-```bash
-npm test
-```
-- Recommended: enable CI (GitHub Actions) to run tests and linting on every PR.
+Common tasks
+- Add new employee: use the app’s UI or command flow; the DAL Xml implementation will update the XML file.
+- Export data: there are export utilities (CSV/Excel) — check PL/ or BL/ for export commands or menus.
 
-Deployment & Security
----------------------
-- Use Docker for consistent deployments; use your cloud provider’s secrets manager for credentials.
-- Never commit secrets to the repository.
-- Use HTTPS in production and enforce reasonable JWT expiry and password hashing (bcrypt).
+Architecture overview
+- PL (Presentation Layer): UI and user interactions
+- BL (Business Logic): validation, rules, and use-cases
+- DAL (Data Access Layer): DAL Xml is the active persistence layer; DalList/DalFacade provide alternate implementations or patterns
 
